@@ -1,3 +1,9 @@
 node_modules
+
+# Build
 dist
 build
+
+# Environments
+.env
+.env.local
