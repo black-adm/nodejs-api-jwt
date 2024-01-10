@@ -13,7 +13,7 @@ interface OutputData {
   accessToken: string;
 }
 
-export class SignUpUseCase {
+export class SignInUseCase {
   async execute({ email, password }: InputData): Promise<OutputData> {
 
     const account = await prisma.account.findUnique({
