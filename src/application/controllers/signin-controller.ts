@@ -1,6 +1,7 @@
 import { z, ZodError } from 'zod';
 import { IController, IRequest, IResponse } from '../interfaces/controller';
 import { SignInUseCase } from '../use-cases/signin-use-case';
+import { InvalidCredentialsError } from '../errors/invalid-credentials-error';
 
 const schema = z.object({
   email: z.string().email().min(1),
@@ -13,8 +14,8 @@ export class SignInController implements IController {
   async handle({ body }: IRequest): Promise<IResponse> {
     try {
       const { email, password } = schema.parse(body);
-
       const { accessToken } = await this.signInUseCase.execute({ email, password });
+
       return {
         statusCode: 200,
         body: { accessToken },
@@ -27,6 +28,16 @@ export class SignInController implements IController {
           body: error.issues,
         };
       }
+
+      if (error instanceof InvalidCredentialsError) {
+        return {
+          statusCode: 401,
+          body: {
+            error: 'Invalid credentials!'
+          }
+        };
+      }
+
       throw error;
     }
   }
