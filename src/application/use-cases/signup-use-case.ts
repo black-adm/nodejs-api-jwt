@@ -11,13 +11,15 @@ interface InputData {
 type OutputData = void;
 
 export class SignUpUseCase {
+  constructor(private readonly salt: number) {}
+
   async execute({ name, email, password }: InputData): Promise<OutputData> {
 
     const accountAlreadyExists = await prisma.account.findUnique({
       where: { email },
     });
 
-    const hashedPassword = await hash(password, 12);
+    const hashedPassword = await hash(password, this.salt);
 
     if (accountAlreadyExists) throw new AccountAlreadyExistsError();
 
