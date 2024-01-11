@@ -1,9 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 
-import { SignInUseCase } from '../application/use-cases/signin-use-case';
-import { SignInController } from '../application/controllers/signin-controller';
 import { makeSignUpController } from '../factories/make-signup-controller';
+import { makeSignInController } from '../factories/make-signin-controller';
 
 const app = express();
 
@@ -20,8 +19,7 @@ app.post('/sign-up', async (request, response) => {
 });
 
 app.post('/sign-in', async (request, response) => {
-  const signInUseCase = new SignInUseCase();
-  const signInController = new SignInController(signInUseCase);
+  const signInController = makeSignInController();
   const { statusCode, body } = await signInController.handle({
     body: request.body
   });
