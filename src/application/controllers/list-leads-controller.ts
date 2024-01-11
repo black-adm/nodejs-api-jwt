@@ -1,9 +1,8 @@
-import { IController, IRequest, IResponse } from '../interfaces/controller';
+import { IController, IResponse } from '../interfaces/controller';
 import { randomUUID } from 'crypto';
 
 export class ListLeadsController implements IController {
-  async handle(request: IRequest): Promise<IResponse> {
-    console.log(request);
+  async handle(): Promise<IResponse> {
 
     return {
       statusCode: 200,

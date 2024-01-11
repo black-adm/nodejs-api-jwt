@@ -17,14 +17,12 @@ export class AuthenticationMiddleware implements IMiddleware {
 
     try {
       const [bearer, token] = authorization.split(' ');
-
       if (bearer !== 'Bearer') throw new Error();
-      verify(token, environment.jwtSecret);
+
+      const payload = verify(token, environment.jwtSecret);
 
       return {
-        data: {
-          accountId: '777'
-        }
+        data: { accountId: payload.sub }
       };
     } catch {
       return {
